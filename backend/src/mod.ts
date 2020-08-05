@@ -55,11 +55,18 @@ app.use(async (ctx) => {
   const filePath = ctx.request.url.pathname;
   const fileWhitelist = [
     "/index.html",
+    "/bundle.js",
   ];
   if (fileWhitelist.includes(filePath)) {
-    await send(ctx, filePath, {
-      root: `${Deno.cwd()}/public`,
-    });
+    if (filePath === "/bundle.js") {
+      await send(ctx, filePath, {
+        root: `${Deno.cwd()}/../frontend/dist`,
+      });
+    } else {
+      await send(ctx, filePath, {
+        root: `${Deno.cwd()}/../public`,
+      });
+    }
   }
 });
 
